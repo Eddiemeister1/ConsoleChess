@@ -1,0 +1,6 @@
+﻿  Board.cpp
+C:\Users\eduar\source\repos\ChessC++\ChessC++\Board.cpp(9,16): error C2440: '=': cannot convert from 'initializer list' to 'char'
+C:\Users\eduar\source\repos\ChessC++\ChessC++\Board.cpp(9,16): message : The initializer contains too many elements
+  ChessC++.cpp
+C:\Users\eduar\source\repos\ChessC++\ChessC++\ChessC++.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
