@@ -7,9 +7,10 @@
 int main()
 {
     std::cout << "Hello World!\n";
-    char* chessboard;
-    Board chess = Board(chessboard);
-    chess.printBoard(chessboard);
+    //Create and fill the chessboard
+    Board();
+
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
