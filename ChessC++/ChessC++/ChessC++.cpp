@@ -3,12 +3,47 @@
 
 #include <iostream>
 #include "Board.h";
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Hello World!\n";
     //Create and fill the chessboard
-    Board();
+    Board chessGame;
+
+    //Give each player a turn to start in this game
+    bool player = 0;
+    
+    while (true)
+    {
+        if (player == 0)
+        {
+            cout << "Player 1's Turn!\n";
+        }
+        else if(player == 1)
+        {
+            cout << "Player 2's Turn!\n";
+        }
+
+         //display the chessboard
+         chessGame.displayBoard();
+
+         //Choose a piece
+         chessGame.choosePieceLocation(player);
+
+         //Scan the
+
+
+         //Change the boolean value of player after every turn
+         if (player == 0)
+         {
+             player = 1;
+         }
+         else
+         {
+             player = 0;
+         }
+    }
 
     return 0;
 }
