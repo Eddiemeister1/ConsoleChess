@@ -14,6 +14,7 @@ int main()
     //Give each player a turn to start in this game
     bool player = 0;
     
+    //Game Starts
     while (true)
     {
         if (player == 0)
@@ -31,7 +32,8 @@ int main()
          //Choose a piece
          chessGame.choosePieceLocation(player);
 
-         //Scan the
+         //Scan the positions that are possible
+         chessGame.chooseDestination(player);
 
 
          //Change the boolean value of player after every turn

@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Piece.h"
 #include <iostream>
 using namespace std;
 
@@ -39,37 +40,69 @@ void Board::choosePieceLocation(bool player)
 	//For debugging purposes
 	cout << "Player " << player<< "\n";
 
-	int rowLocation;
-	int columnLocation;
-	cout << "What row?\n";
-	cin >> rowLocation;
-
-	cout << "What column?\n";
-	cin >> columnLocation;
-
-	char location = chessboard[rowLocation][columnLocation];
-
-	if (player == 0)
+	//int rowLocation;
+	//int columnLocation;
+	//It could be a good idea to put a while loop for error handling
+	while (true)
 	{
-		if (location == 'R' || location == 'N' || location == 'B' || location == 'K' || location == 'Q' || location == 'P')
+		cout << "What row?\n";
+		cin >> rowLocation;
+
+		cout << "What column?\n";
+		cin >> columnLocation;
+
+		char location = chessboard[rowLocation][columnLocation];
+
+		if (player == 0)
 		{
-			cout << "Success! You chose your piece!\n";
+			if (location == 'R' || location == 'N' || location == 'B' || location == 'K' || location == 'Q' || location == 'P')
+			{
+				cout << "Success! You chose your piece!\n";
+				break;
+			}
+			else
+			{
+				cout << "ERROR! This is not one of your pieces!\n";
+				continue;
+			}
 		}
-		else
+		else if (player == 1)
 		{
-			cout << "ERROR! This is not one of your pieces!\n";
-		}
-	}
-	else if (player == 1)
-	{
-		if (location == 'r' || location == 'n' || location == 'b' || location == 'k' || location == 'q' || location == 'p')
-		{
-			cout << "Success! You chose your piece!\n";
-		}
-		else
-		{
-			cout << "ERROR! This is not one of your pieces!\n";
+			if (location == 'r' || location == 'n' || location == 'b' || location == 'k' || location == 'q' || location == 'p')
+			{
+				cout << "Success! You chose your piece!\n";
+				break;
+			}
+			else
+			{
+				cout << "ERROR! This is not one of your pieces!\n";
+				continue;
+			}
 		}
 	}
 
 };
+
+void Board::chooseDestination(bool player)
+{
+	//First, identify the piece that the player chose
+	int pieceRow = getRowLocation();
+	int pieceColumn = getColumnLocation();
+	char piece = chessboard[pieceRow][pieceColumn];
+
+	Piece chess(piece);
+	//Second, scan and record the possible locations on the board based on the behavior of the piece
+	//Third, ask the player what location is desired for your destination
+	//The user's input would then get determined if it is a viable option
+
+}
+
+int Board::getRowLocation()
+{
+	return rowLocation;
+}
+
+int Board::getColumnLocation()
+{
+	return columnLocation;
+}
