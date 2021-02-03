@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <string>
 using namespace std;
 
 class Board
@@ -7,7 +8,8 @@ class Board
 private:
 	int rowLocation;
 	int columnLocation;
-	void pawnScan(map<string, char> possibleLocations);
+	void pawnScan(map <string, char> &possibleLocations, int pieceRow, int pieceColumn, bool player);
+	void addToMap(map <string, char> &possibleLocations, int pieceRow, int pieceColumn, int rowIncrement, int columnIncrement);
 
 	public:
 		Board();
