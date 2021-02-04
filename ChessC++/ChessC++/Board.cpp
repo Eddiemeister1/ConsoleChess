@@ -15,8 +15,8 @@ using namespace std;
 			   {'7', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
 			   {'8', 'r', 'b', 'n', 'q', 'k', 'n', 'b', 'r'} };
 
-char player1Pieces[6] = { 'R', 'B', 'N', 'K', 'Q', 'P'};
-char player2Pieces[6] = { 'r', 'b', 'n', 'k', 'q', 'p' };
+ string player1Pieces = "RBNKQP";
+ string player2Pieces = "rbnkqp";
 
 //Creating and filling up the chessboard
 Board::Board() {
@@ -114,6 +114,8 @@ void Board::chooseDestination(bool player)
 	else if (piece == 'R' || piece == 'r')
 	{
 		cout << "This is a rook\n";
+		rookScan(possibleLocations, pieceRow, pieceColumn, player);
+
 	}
 	else if (piece == 'B' || piece == 'b')
 	{
@@ -131,6 +133,7 @@ void Board::chooseDestination(bool player)
 	{
 		cout << "This is a king\n";
 	}
+
 	while (true)
 	{
 		//Third, ask the player what location is desired for your destination
@@ -176,7 +179,101 @@ int Board::getColumnLocation()
 	return columnLocation;
 }
 
+void Board::rookScan(map<string, char>& possibleLocations, int pieceRow, int pieceColumn, bool player)
+{
+		//We can start increasing and decreasing by row and then by column
+		//First, increasing by row
+		int rowIncrement = 1;
+		for (rowIncrement; pieceRow + rowIncrement < 9; rowIncrement++)
+		{
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
+		}
 
+		//Decreasing by row
+		rowIncrement = -1;
+		for (rowIncrement; pieceRow + rowIncrement > 0; rowIncrement--)
+		{
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
+		}
+
+		//Increasing by column
+		int columnIncrement = 1;
+		for (columnIncrement; pieceColumn + columnIncrement < 9; columnIncrement++)
+		{
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
+		}
+
+		//Decreasing by column
+		columnIncrement = -1;
+		for (columnIncrement; pieceColumn + columnIncrement > 0; columnIncrement--)
+		{
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
+				{
+					//Their own piece has been found
+					break;
+				}
+			}
+			addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
+		}
+}
 void Board::pawnScan(map<string, char> &possibleLocations, int pieceRow, int pieceColumn, bool player)
 {
 	if (player == 0)
@@ -201,23 +298,17 @@ void Board::pawnScan(map<string, char> &possibleLocations, int pieceRow, int pie
 		//Enemy space
 		if (pieceColumn - 1 > 0)
 		{
-			for (int i = 0; i < 6; i++)
+			if (player2Pieces.find(chessboard[pieceRow + 1][pieceColumn - 1]) != string::npos)
 			{
-				if (chessboard[pieceRow + 1][pieceColumn - 1] == player2Pieces[i])
-				{
-					addToMap(possibleLocations, pieceRow, pieceColumn, 1, -1);
-				}
+				addToMap(possibleLocations, pieceRow, pieceColumn, 1, -1);
 			}
 		}
 
 		if (pieceColumn + 1 < 9)
 		{
-			for (int i = 0; i < 6; i++)
+			if (player2Pieces.find(chessboard[pieceRow + 1][pieceColumn + 1]) != string::npos)
 			{
-				if (chessboard[pieceRow + 1][pieceColumn + 1] == player2Pieces[i])
-				{
-					addToMap(possibleLocations, pieceRow, pieceColumn, 1, 1);
-				}
+				addToMap(possibleLocations, pieceRow, pieceColumn, 1, 1);
 			}
 		}
 	}
@@ -243,23 +334,17 @@ void Board::pawnScan(map<string, char> &possibleLocations, int pieceRow, int pie
 		//Enemy space
 		if (pieceColumn - 1 > 0)
 		{
-			for (int i = 0; i < 6; i++)
+			if (player1Pieces.find(chessboard[pieceRow - 1][pieceColumn - 1] != string::npos))
 			{
-				if (chessboard[pieceRow - 1][pieceColumn - 1] == player2Pieces[i])
-				{
-					addToMap(possibleLocations, pieceRow, pieceColumn, -1, -1);
-				}
+				addToMap(possibleLocations, pieceRow, pieceColumn, -1, -1);
 			}
 		}
 
 		if (pieceColumn + 1 < 9)
 		{
-			for (int i = 0; i < 6; i++)
+			if (player1Pieces.find(chessboard[pieceRow - 1][pieceColumn + 1] != string::npos))
 			{
-				if (chessboard[pieceRow - 1][pieceColumn + 1] == player2Pieces[i])
-				{
-					addToMap(possibleLocations, pieceRow, pieceColumn, -1, 1);
-				}
+				addToMap(possibleLocations, pieceRow, pieceColumn, -1, 1);
 			}
 		}
 	}

@@ -9,6 +9,7 @@ private:
 	int rowLocation;
 	int columnLocation;
 	void pawnScan(map <string, char> &possibleLocations, int pieceRow, int pieceColumn, bool player);
+	void rookScan(map <string, char>& possibleLocations, int pieceRow, int pieceColumn, bool player);
 	void addToMap(map <string, char> &possibleLocations, int pieceRow, int pieceColumn, int rowIncrement, int columnIncrement);
 
 	public:
