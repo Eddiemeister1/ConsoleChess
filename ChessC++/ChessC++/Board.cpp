@@ -120,6 +120,7 @@ void Board::chooseDestination(bool player)
 	else if (piece == 'B' || piece == 'b')
 	{
 		cout << "This is a bishop\n";
+		bishopScan(possibleLocations, pieceRow, pieceColumn, player);
 	}
 	else if (piece == 'N' || piece == 'n')
 	{
@@ -159,6 +160,7 @@ void Board::chooseDestination(bool player)
 				cout << "Success! Destination is a viable option!" << endl;
 				chessboard[destinationRow][destinationColumn] = chessboard[pieceRow][pieceColumn];
 				chessboard[pieceRow][pieceColumn] = 'o';
+				possibleLocations.clear();
 				break;
 			}
 		}
@@ -179,100 +181,190 @@ int Board::getColumnLocation()
 	return columnLocation;
 }
 
+void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int pieceColumn, bool player)
+{
+	//We can start increasing by row as well as increasing and decreasing by column
+	int rowIncrement = 1;
+	int columnIncrement = 1;
+	cout << "Scanning the Bishop Possible Locations" << endl;
+	for (rowIncrement; pieceRow + rowIncrement < 9; rowIncrement++)
+	{
+		cout << "Checking the rows..." << endl;
+		if (pieceColumn + columnIncrement < 9 && pieceColumn - columnIncrement > 0 )
+		{
+			cout << "Scanning the possible columns" << endl;
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					columnIncrement *= -1;
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+					columnIncrement *= -1;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					columnIncrement *= -1;
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+					columnIncrement *= -1;
+				}
+			}
+		}
+	}
+
+	rowIncrement = -1;
+	for (rowIncrement; pieceRow + rowIncrement > 0; rowIncrement--)
+	{
+		cout << "Checking the backrows..." << endl;
+		if (pieceColumn + columnIncrement < 9 && pieceColumn - columnIncrement > 0)
+		{
+			cout << "Scanning the possible backcolumns" << endl;
+			if (player == 0)
+			{
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+
+				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					columnIncrement *= -1;
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+					columnIncrement *= -1;
+				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					columnIncrement *= -1;
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+					columnIncrement *= -1;
+				}
+			}
+		}
+	}
+
+}
 void Board::rookScan(map<string, char>& possibleLocations, int pieceRow, int pieceColumn, bool player)
 {
-		//We can start increasing and decreasing by row and then by column
-		//First, increasing by row
-		int rowIncrement = 1;
-		for (rowIncrement; pieceRow + rowIncrement < 9; rowIncrement++)
+	//We can start increasing and decreasing by row and then by column
+//First, increasing by row
+	int rowIncrement = 1;
+	for (rowIncrement; pieceRow + rowIncrement < 9; rowIncrement++)
+	{
+		if (player == 0)
 		{
-			if (player == 0)
+			if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
 			{
-				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
+				//Their own piece has been found
+				break;
 			}
-			else if (player == 1)
-			{
-				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
-			}
-			addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
 		}
+		else if (player == 1)
+		{
+			if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+			{
+				//Their own piece has been found
+				break;
+			}
+		}
+		addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
+	}
 
-		//Decreasing by row
-		rowIncrement = -1;
-		for (rowIncrement; pieceRow + rowIncrement > 0; rowIncrement--)
+	//Decreasing by row
+	rowIncrement = -1;
+	for (rowIncrement; pieceRow + rowIncrement > 0; rowIncrement--)
+	{
+		if (player == 0)
 		{
-			if (player == 0)
+			if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
 			{
-				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
+				//Their own piece has been found
+				break;
 			}
-			else if (player == 1)
-			{
-				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
-			}
-			addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
 		}
+		else if (player == 1)
+		{
+			if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn]) != string::npos)
+			{
+				//Their own piece has been found
+				break;
+			}
+		}
+		addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, 0);
+	}
 
-		//Increasing by column
-		int columnIncrement = 1;
-		for (columnIncrement; pieceColumn + columnIncrement < 9; columnIncrement++)
+	//Increasing by column
+	int columnIncrement = 1;
+	for (columnIncrement; pieceColumn + columnIncrement < 9; columnIncrement++)
+	{
+		if (player == 0)
 		{
-			if (player == 0)
+			if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
 			{
-				if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
+				//Their own piece has been found
+				break;
 			}
-			else if (player == 1)
-			{
-				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
-			}
-			addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
 		}
+		else if (player == 1)
+		{
+			if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) != string::npos)
+			{
+				//Their own piece has been found
+				break;
+			}
+		}
+		addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
+	}
 
-		//Decreasing by column
-		columnIncrement = -1;
-		for (columnIncrement; pieceColumn + columnIncrement > 0; columnIncrement--)
+	//Decreasing by column
+	columnIncrement = -1;
+	for (columnIncrement; pieceColumn + columnIncrement > 0; columnIncrement--)
+	{
+		if (player == 0)
 		{
-			if (player == 0)
+			if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
 			{
-				if (player1Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
+				//Their own piece has been found
+				break;
 			}
-			else if (player == 1)
-			{
-				if (player2Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
-				{
-					//Their own piece has been found
-					break;
-				}
-			}
-			addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
 		}
+		else if (player == 1)
+		{
+			if (player2Pieces.find(chessboard[pieceRow][pieceColumn + columnIncrement]) != string::npos)
+			{
+				//Their own piece has been found
+				break;
+			}
+		}
+		addToMap(possibleLocations, pieceRow, pieceColumn, 0, columnIncrement);
+	}
 }
 void Board::pawnScan(map<string, char> &possibleLocations, int pieceRow, int pieceColumn, bool player)
 {
