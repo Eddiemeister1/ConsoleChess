@@ -190,7 +190,7 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 	for (rowIncrement; pieceRow + rowIncrement < 9; rowIncrement++)
 	{
 		cout << "Checking the rows..." << endl;
-		if (pieceColumn + columnIncrement < 9 && pieceColumn - columnIncrement > 0 )
+		if (pieceColumn + columnIncrement < 9)
 		{
 			cout << "Scanning the possible columns" << endl;
 			if (player == 0)
@@ -200,7 +200,21 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 					//If their own piece has not been found, add it to the map
 					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
 				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+			}
+		}
 
+		if (pieceColumn - columnIncrement > 0)
+		{
+			if (player == 0)
+			{
 				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
 				{
 					//If their own piece has not been found, add it to the map
@@ -211,12 +225,6 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 			}
 			else if (player == 1)
 			{
-				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
-				{
-					//If their own piece has not been found, add it to the map
-					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
-				}
-
 				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
 				{
 					//If their own piece has not been found, add it to the map
@@ -226,13 +234,15 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 				}
 			}
 		}
+		columnIncrement++;
 	}
 
 	rowIncrement = -1;
+	columnIncrement = 1;
 	for (rowIncrement; pieceRow + rowIncrement > 0; rowIncrement--)
 	{
 		cout << "Checking the backrows..." << endl;
-		if (pieceColumn + columnIncrement < 9 && pieceColumn - columnIncrement > 0)
+		if (pieceColumn + columnIncrement < 9)
 		{
 			cout << "Scanning the possible backcolumns" << endl;
 			if (player == 0)
@@ -242,7 +252,21 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 					//If their own piece has not been found, add it to the map
 					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
 				}
+			}
+			else if (player == 1)
+			{
+				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
+				{
+					//If their own piece has not been found, add it to the map
+					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
+				}
+			}
+		}
 
+		if (pieceColumn - columnIncrement > 0)
+		{
+			if (player == 0)
+			{
 				if (player1Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
 				{
 					//If their own piece has not been found, add it to the map
@@ -253,12 +277,6 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 			}
 			else if (player == 1)
 			{
-				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn + columnIncrement]) == string::npos)
-				{
-					//If their own piece has not been found, add it to the map
-					addToMap(possibleLocations, pieceRow, pieceColumn, rowIncrement, columnIncrement);
-				}
-
 				if (player2Pieces.find(chessboard[pieceRow + rowIncrement][pieceColumn - columnIncrement]) == string::npos)
 				{
 					//If their own piece has not been found, add it to the map
@@ -268,6 +286,7 @@ void Board::bishopScan(map <string, char>& possibleLocations, int pieceRow, int 
 				}
 			}
 		}
+		columnIncrement++;
 	}
 
 }
